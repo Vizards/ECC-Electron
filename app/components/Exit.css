@@ -1,0 +1,10 @@
+.exit {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.exit a {
+  display: inline-block;
+  height: 24px;
+}
