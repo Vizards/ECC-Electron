@@ -9,6 +9,7 @@ import MainPage from './containers/MainPage';
 import DownloadPage from './containers/DownloadPage';
 import UploadPage from './containers/UploadPage';
 import NodePage from './containers/NodePage';
+import QueryPage from './containers/QueryPage';
 
 export default () => (
   <App>
@@ -19,6 +20,7 @@ export default () => (
       <Route path="/download" component={DownloadPage} />
       <Route path="/upload" component={UploadPage} />
       <Route path="/node" component={NodePage} />
+      <Route path="/query" component={QueryPage} />
       <Route path="/" exact component={HomePage} />
     </Switch>
   </App>
