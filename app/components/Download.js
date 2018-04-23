@@ -9,6 +9,8 @@ import check from './images/Download/group-5.svg';
 import download from './images/Download/group-4.svg';
 import verify from './images/Download/group-3.svg';
 
+const { clipboard } = require('electron');
+
 type Props = {};
 
 class MyInput extends Component {
@@ -166,6 +168,7 @@ export default class Download extends Component<Props> {
       }
     });
     await this.setState({ loading: true });
+    console.log(value);
     const res = await fetch('http://127.0.0.1:49600/api/ticket', {
       method: 'POST',
       data: {
@@ -196,6 +199,7 @@ export default class Download extends Component<Props> {
         }
       });
       console.log(copy);
+      clipboard.writeText(copy);
     }
   };
 

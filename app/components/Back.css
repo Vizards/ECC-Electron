@@ -2,6 +2,7 @@
   position: absolute;
   left: 19px;
   top: 34px;
+  cursor: pointer;
 }
 
 .back .title {
