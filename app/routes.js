@@ -8,6 +8,7 @@ import RegisterPage from './containers/RegisterPage';
 import MainPage from './containers/MainPage';
 import DownloadPage from './containers/DownloadPage';
 import UploadPage from './containers/UploadPage';
+import NodePage from './containers/NodePage';
 
 export default () => (
   <App>
@@ -17,6 +18,7 @@ export default () => (
       <Route path="/main" component={MainPage} />
       <Route path="/download" component={DownloadPage} />
       <Route path="/upload" component={UploadPage} />
+      <Route path="/node" component={NodePage} />
       <Route path="/" exact component={HomePage} />
     </Switch>
   </App>

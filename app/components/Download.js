@@ -61,7 +61,7 @@ class MyInput extends Component {
 // We want to retrieve MyInput as a pure DOM node:
 const wrapper = document.createElement('div');
 ReactDOM.render(<MyInput />, wrapper);
-let el = wrapper.firstChild;
+const el = wrapper.firstChild;
 
 export default class Download extends Component<Props> {
   props: Props;
@@ -169,37 +169,39 @@ export default class Download extends Component<Props> {
     });
     await this.setState({ loading: true });
     console.log(value);
-    const res = await fetch('http://127.0.0.1:49600/api/ticket', {
-      method: 'POST',
-      data: {
-        fileId: item.field,
-        signFor: value.text,
-        password: value.password
-      }
-    });
-    const data = await res.json();
-    await this.setState({ loading: false });
-    if (data.status === 200) {
-      const copy = await swal(data.data, {
-        buttons: {
-          cancel: {
-            text: '复  制',
-            value: data.data,
-            visible: true,
-            className: 'copyButton',
-            closeModal: true,
-          },
-          confirm: {
-            text: '关  闭',
-            value: null,
-            visible: true,
-            className: 'confirmButton',
-            closeModal: true
-          }
+    if (value !== null) {
+      const res = await fetch('http://127.0.0.1:49600/api/ticket', {
+        method: 'POST',
+        data: {
+          fileId: item.field,
+          signFor: value.text,
+          password: value.password
         }
       });
-      console.log(copy);
-      clipboard.writeText(copy);
+      const data = await res.json();
+      await this.setState({ loading: false });
+      if (data.status === 200) {
+        const copy = await swal(data.data, {
+          buttons: {
+            cancel: {
+              text: '复  制',
+              value: data.data,
+              visible: true,
+              className: 'copyButton',
+              closeModal: true,
+            },
+            confirm: {
+              text: '关  闭',
+              value: null,
+              visible: true,
+              className: 'confirmButton',
+              closeModal: true
+            }
+          }
+        });
+        console.log(copy);
+        clipboard.writeText(copy);
+      }
     }
   };
 
