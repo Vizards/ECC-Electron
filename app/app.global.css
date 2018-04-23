@@ -38,3 +38,43 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+.swal-modal {
+  border-radius: 8px;
+  background-color: #223159;
+}
+
+.swal-footer {
+  text-align: center;
+}
+
+.swal-button-container {
+  text-align: center;
+}
+
+.swal-button {
+  width: 101px;
+  height: 34px;
+  padding: 0;
+  color: #000;
+  background: #dae4f4;
+  margin: 0 18px;
+}
+
+.swal-text {
+  color: #fff;
+  font-size: 12px;
+  text-align: left;
+}
+
+.swal-content__input {
+  border-radius: 14px;
+  background-color: #19284e;
+  border: 0 none;
+  outline: 0 none;
+  color: #fff;
+  height: 28px;
+  padding-left: 22px;
+  font-size: 12px;
+  margin: 12.5px 0;
+}

@@ -1,0 +1,9 @@
+.back {
+  position: absolute;
+  left: 19px;
+  top: 34px;
+}
+
+.back .title {
+  padding-left: 22px;
+}

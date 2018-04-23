@@ -17,7 +17,7 @@ export default class Menu extends Component<Props> {
     return (
       <div className={styles.menu} data-tid="menu">
         <div>
-          <Link to="/"><img src={download} alt="download" /></Link>
+          <Link to="/download"><img src={download} alt="download" /></Link>
           <Link to="/"><img src={query} alt="query" /></Link>
         </div>
         <div>

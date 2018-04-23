@@ -1,0 +1,84 @@
+.download {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+}
+
+.download .fileList {
+  width: 90%;
+  height: 60%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.download .fileList .file {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-top: 14px;
+}
+
+.download .fileList .file span {
+  display: inline-block;
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  text-align: left;
+  color: #fff;
+  line-height: 24px;
+}
+
+.download .fileList .file .buttons {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.download .fileList .file .buttons .lastButton {
+  padding-left: 18px;
+}
+
+.download .verify {
+  width: 100%;
+  position: fixed;
+  bottom: 38px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download .verify input {
+  border-radius: 14px;
+  background-color: #19284e;
+  border: 0 none;
+  outline: 0 none;
+  color: #fff;
+  padding-left: 22px;
+  height: 28px;
+  width: 30%;
+  margin-right: 16px;
+  letter-spacing: 1px;
+}
