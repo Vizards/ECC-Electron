@@ -1,12 +1,6 @@
 // @flow
 import * as React from 'react';
 
-const ipc = require('electron').ipcRenderer;
-
-ipc.on('got-app-path', (event, path) => {
-  global.appPath = path;
-});
-
 type Props = {
   children: React.Node
 };

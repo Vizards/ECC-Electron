@@ -1,67 +1,36 @@
 // @flow
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { RingLoader } from 'react-spinners';
+import Modal from 'react-modal';
 import swal from 'sweetalert';
 import styles from './Download.css';
 
 import check from './images/Download/group-5.svg';
 import download from './images/Download/group-4.svg';
 import verify from './images/Download/group-3.svg';
+import cancel from './images/Download/group.svg';
+import confirm from './images/Download/confirm.svg';
 
 const { clipboard } = require('electron');
 
+const customStyles = {
+  overlay: {
+    background: '#101628'
+  },
+  content: {
+    width: '70%',
+    height: '50%',
+    margin: 'auto',
+    borderRadius: '8px',
+    background: '#223159',
+    border: '0 none',
+    textAlign: 'center',
+  }
+};
+
+Modal.setAppElement('#root');
+
 type Props = {};
-
-class MyInput extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      text: '',
-      password: '',
-    };
-  }
-
-  changeText(e) {
-    this.setState({
-      [e.target.type]: e.target.value,
-    }, () => {
-      global.DEFAULT_INPUT = { text: this.state.text, password: this.state.password };
-    });
-
-    /*
-     * This will update the value that the confirm
-     * button resolves to:
-     */
-  }
-
-  render() {
-    return (
-      <div>
-        <input
-          value={this.state.text}
-          type="text"
-          className="swal-content__input"
-          placeholder="签发给"
-          onChange={this.changeText.bind(this)}
-        />
-        <input
-          value={this.state.password}
-          type="password"
-          className="swal-content__input"
-          placeholder="文件密码"
-          onChange={this.changeText.bind(this)}
-        />
-      </div>
-    );
-  }
-}
-
-// We want to retrieve MyInput as a pure DOM node:
-const wrapper = document.createElement('div');
-ReactDOM.render(<MyInput />, wrapper);
-const el = wrapper.firstChild;
 
 export default class Download extends Component<Props> {
   props: Props;
@@ -71,6 +40,10 @@ export default class Download extends Component<Props> {
     ticketId: '',
     dir: '',
     loading: false,
+    modalIsOpen: false,
+    item: {},
+    text: '',
+    password: '',
   };
 
   async componentWillMount() {
@@ -146,63 +119,56 @@ export default class Download extends Component<Props> {
     }
   };
 
-  handleCheck = async (item) => {
-    const value = await swal({
-      text: item.fileName,
-      content: el,
-      buttons: {
-        cancel: {
-          text: '关  闭',
-          value: null,
-          visible: true,
-          className: 'cancelButton',
-          closeModal: true,
-        },
-        confirm: {
-          text: '确  定',
-          value: global.DEFAULT_INPUT,
-          visible: true,
-          className: 'confirmButton',
-          closeModal: true
-        }
+  handleChangeInput = (e) => {
+    this.setState({ [e.target.type]: e.target.value });
+  };
+
+  showModal = async (item) => {
+    console.log(item);
+    await this.setState({
+      item,
+      modalIsOpen: true,
+    });
+  };
+
+  handleCheck = async () => {
+    await this.setState({ loading: true, modalIsOpen: false });
+    const res = await fetch('http://127.0.0.1:49600/api/ticket', {
+      method: 'POST',
+      data: {
+        fileId: this.state.item.field,
+        signFor: this.state.text,
+        password: this.state.password
       }
     });
-    await this.setState({ loading: true });
-    console.log(value);
-    if (value !== null) {
-      const res = await fetch('http://127.0.0.1:49600/api/ticket', {
-        method: 'POST',
-        data: {
-          fileId: item.field,
-          signFor: value.text,
-          password: value.password
+    const data = await res.json();
+    await this.setState({ loading: false });
+    if (data.status === 200) {
+      const copy = await swal(data.data, {
+        buttons: {
+          cancel: {
+            text: '复  制',
+            value: data.data,
+            visible: true,
+            className: 'copyButton',
+            closeModal: true,
+          },
+          confirm: {
+            text: '关  闭',
+            value: null,
+            visible: true,
+            className: 'confirmButton',
+            closeModal: true
+          }
         }
       });
-      const data = await res.json();
-      await this.setState({ loading: false });
-      if (data.status === 200) {
-        const copy = await swal(data.data, {
-          buttons: {
-            cancel: {
-              text: '复  制',
-              value: data.data,
-              visible: true,
-              className: 'copyButton',
-              closeModal: true,
-            },
-            confirm: {
-              text: '关  闭',
-              value: null,
-              visible: true,
-              className: 'confirmButton',
-              closeModal: true
-            }
-          }
-        });
-        console.log(copy);
-        clipboard.writeText(copy);
-      }
+      console.log(copy);
+      clipboard.writeText(copy);
     }
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
   };
 
   render() {
@@ -219,7 +185,7 @@ export default class Download extends Component<Props> {
             <div key={item.fileId} className={styles.file}>
               <span>{item.fileName}</span>
               <div className={styles.buttons}>
-                <a onClick={this.handleCheck.bind(this, item)}><img src={check} alt="check" /></a>
+                <a onClick={this.showModal.bind(this, item)}><img src={check} alt="check" /></a>
                 <a className={styles.lastButton} onClick={this.handleDownload.bind(this, item.fileId)}><img src={download} alt="download" /></a>
               </div>
             </div>
@@ -230,6 +196,20 @@ export default class Download extends Component<Props> {
           <input type="text" placeholder="输入文件保存路径" value={this.state.dir} name="dir" onChange={this.handleChange} />
           <a onClick={this.handleVerify}><img src={verify} alt="verify" /></a>
         </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Example Modal"
+          style={customStyles}
+        >
+          <p className={styles.fileName}>{this.state.item.fileName}</p>
+          <input type="text" placeholder="签发给" value={this.state.text} onChange={this.handleChangeInput} className={styles.input} />
+          <input type="password" placeholder="文件密码" value={this.state.password} onChange={this.handleChangeInput} className={styles.input} />
+          <div className={styles.modalButton}>
+            <a onClick={this.closeModal}><img src={cancel} alt="close" /></a>
+            <a onClick={this.handleCheck}><img src={confirm} alt="ok" /></a>
+          </div>
+        </Modal>
       </div>
     );
   }

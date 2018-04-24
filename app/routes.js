@@ -21,7 +21,7 @@ export default () => (
       <Route path="/upload" component={UploadPage} />
       <Route path="/node" component={NodePage} />
       <Route path="/query" component={QueryPage} />
-      <Route path="/" exact component={HomePage} />
+      <Route path="/" component={HomePage} />
     </Switch>
   </App>
 );

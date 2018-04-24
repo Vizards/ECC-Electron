@@ -4,6 +4,12 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import Routes from '../routes';
 
+const ipc = require('electron').ipcRenderer;
+
+ipc.on('got-app-path', (event, path) => {
+  global.appPath = path;
+});
+
 type Props = {
   store: {},
   history: {}
