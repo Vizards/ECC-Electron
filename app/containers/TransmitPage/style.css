@@ -34,6 +34,13 @@
   white-space: nowrap;
 }
 
+.TransmitPage .fileList .file .buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .TransmitPage .fileList .file .buttons img {
   cursor: pointer;
 }
@@ -64,3 +71,112 @@
 .TransmitPage .footer img:hover {
   opacity: 0.5;
 }
+
+.modalFileName {
+  font-size: 12px;
+  text-align: center;
+  color: #000;
+  margin: 0;
+}
+
+.modalInput {
+  width: 413px;
+  height: 28px;
+  border-radius: 4px;
+  background-color: #fff;
+  border: solid 1px #e7e7e7;
+  padding-left: 12px;
+  margin-top: 20px;
+  outline: 0 none;
+}
+
+.modalButtons {
+  padding-top: 31px;
+}
+
+.modalButtons img {
+  margin: 0 24px;
+  cursor: pointer;
+}
+
+.modalButtons img:hover {
+  opacity: 0.5;
+}
+
+.modalSelectFile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-top: 21px;
+}
+
+.modalSelectFile p {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.42);
+  width: 311px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modalSelectFile img {
+  cursor: pointer;
+}
+
+.modalSelectFile img:hover {
+  opacity: 0.5;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+}
+
+.ticketInput {
+  width: 413px;
+  height: 56px;
+  border-radius: 4px;
+  background-color: #fff;
+  border: solid 1px #e7e7e7;
+  outline: 0 none;
+  padding: 5px 12px;
+  margin-top: 16px;
+}
+
+.modalInfo {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 15px;
+}
+
+.modalInfo p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #9a9a9a;
+  padding-left: 16px;
+}
+
+.modalInfo p span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #000;
+}
+

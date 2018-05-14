@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="28" viewBox="0 0 90 28">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="90" height="28" fill="#769BE5" rx="4"/>
+        <text fill="#FFF" font-family="PingFangSC-Regular, PingFang SC" font-size="12" letter-spacing="4">
+            <tspan x="15" y="18">选择文件</tspan>
+        </text>
+    </g>
+</svg>

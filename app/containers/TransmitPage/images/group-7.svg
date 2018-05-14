@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="130" height="36" viewBox="0 0 130 36">
+    <defs>
+        <rect id="a" width="130" height="36" rx="2"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <use fill="#FAFAFA" xlink:href="#a"/>
+            <rect width="129" height="35" x=".5" y=".5" stroke="#E7E7E7" rx="2"/>
+        </g>
+        <text fill="#000" font-family="PingFangSC-Medium, PingFang SC" font-size="14" font-weight="400" letter-spacing="1.167">
+            <tspan x="46.419" y="23">签 发</tspan>
+        </text>
+    </g>
+</svg>
