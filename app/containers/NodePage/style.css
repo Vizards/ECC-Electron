@@ -1,0 +1,32 @@
+.NodePage {
+  width: 100%;
+}
+
+.NodePage .top,
+.NodePage .bottom {
+  height: 120px;
+  padding: 0 50px;
+  margin-top: 27px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.NodePage p {
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #9a9a9a;
+  margin: 2px 0;
+}
+
+.NodePage span {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #292929;
+}

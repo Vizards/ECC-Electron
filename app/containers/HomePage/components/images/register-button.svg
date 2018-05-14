@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="36" viewBox="0 0 240 36">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="240" height="36" fill="#769BE5" rx="2"/>
+        <text fill="#FFF" font-family="PingFangSC-Medium, PingFang SC" font-size="14" font-weight="400" letter-spacing="1.167">
+            <tspan x="93.505" y="23">注 册</tspan>
+        </text>
+    </g>
+</svg>

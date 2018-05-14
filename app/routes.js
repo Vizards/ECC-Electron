@@ -2,26 +2,22 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import App from './containers/App';
-import HomePage from './containers/HomePage';
-import LoginPage from './containers/LoginPage';
-import RegisterPage from './containers/RegisterPage';
-import MainPage from './containers/MainPage';
-import DownloadPage from './containers/DownloadPage';
-import UploadPage from './containers/UploadPage';
-import NodePage from './containers/NodePage';
-import QueryPage from './containers/QueryPage';
+import HomePage from './containers/HomePage/index';
+import NodePage from './containers/NodePage/index';
+import AuditPage from './containers/AuditPage/index';
+import HumanPage from './containers/HumanPage/index';
+import QueryPage from './containers/QueryPage/index';
+import TransmitPage from './containers/TransmitPage/index';
 
 export default () => (
   <App>
     <Switch>
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/main" component={MainPage} />
-      <Route path="/download" component={DownloadPage} />
-      <Route path="/upload" component={UploadPage} />
+      <Route exact path="/" component={HomePage} />
       <Route path="/node" component={NodePage} />
+      <Route path="/audit" component={AuditPage} />
+      <Route path="/human" component={HumanPage} />
       <Route path="/query" component={QueryPage} />
-      <Route path="/" component={HomePage} />
+      <Route path="/transmit" component={TransmitPage} />
     </Switch>
   </App>
 );

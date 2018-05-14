@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="24" viewBox="0 0 80 24">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="80" height="24" fill="#EBEBEB" rx="2"/>
+        <text fill="#757575" font-family="PingFangSC-Regular, PingFang SC" font-size="12" letter-spacing="4">
+            <tspan x="10" y="16">签发凭据</tspan>
+        </text>
+    </g>
+</svg>

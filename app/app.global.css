@@ -5,7 +5,7 @@
 @import "~font-awesome/css/font-awesome.css";
 
 html {
-  background-image: linear-gradient(to bottom, #1c2c55, #24335a);
+  background: #fafafa;
 }
 
 body {
@@ -25,18 +25,6 @@ body {
 
 li {
   list-style: none;
-}
-
-a {
-  color: white;
-  opacity: 1;
-  text-decoration: none;
-}
-
-a:hover {
-  opacity: 0.75;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .swal-modal {

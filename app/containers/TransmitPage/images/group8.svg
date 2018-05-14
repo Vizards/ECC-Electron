@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="64" height="24" fill="#769BE5" rx="2"/>
+        <text fill="#FFF" font-family="PingFangSC-Regular, PingFang SC" font-size="12" letter-spacing="4">
+            <tspan x="18" y="16">下载</tspan>
+        </text>
+    </g>
+</svg>

@@ -1,0 +1,66 @@
+.TransmitPage {
+  width: 100%;
+  height: 100%;
+}
+
+.TransmitPage .fileList {
+  overflow-y: scroll;
+  min-height: calc(100% - 161px);
+  padding: 0 35px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.TransmitPage .fileList .file {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.TransmitPage .fileList .file span {
+  font-size: 12px;
+  text-align: left;
+  color: #000;
+  display: inline-block;
+  width: 325px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TransmitPage .fileList .file .buttons img {
+  cursor: pointer;
+}
+
+.TransmitPage .fileList .file .buttons .lastButton {
+  margin-left: 19px;
+}
+
+.TransmitPage .footer {
+  height: 67px;
+  margin: 0 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #e7e7e7;
+}
+
+.TransmitPage .footer img {
+  margin-left: 14px;
+  cursor: pointer;
+}
+
+.TransmitPage .fileList .file .buttons img:hover {
+  opacity: 0.5;
+}
+
+.TransmitPage .footer img:hover {
+  opacity: 0.5;
+}
