@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="36" viewBox="0 0 130 36">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="130" height="36" fill="#769BE5" rx="2"/>
+        <text fill="#FFF" font-family="PingFangSC-Medium, PingFang SC" font-size="14" font-weight="400" letter-spacing="1.167">
+            <tspan x="25.924" y="23">信 息 验 证</tspan>
+        </text>
+    </g>
+</svg>

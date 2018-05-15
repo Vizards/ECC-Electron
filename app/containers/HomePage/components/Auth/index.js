@@ -64,7 +64,7 @@ class Home extends Component<Props> {
   };
 
   handleLogin = () => {
-    fetch('http://127.0.0.1:49600/api/login', {
+    fetch('http://hins.work:49600/api/login', {
       method: 'POST',
       data: {
         email: this.state.loginEmail,
@@ -80,7 +80,7 @@ class Home extends Component<Props> {
   };
 
   handleRegister = () => {
-    fetch('http://127.0.0.1:49600/api/register', {
+    fetch('http://hins.work:49600/api/register', {
       method: 'POST',
       data: {
         email: this.state.registerEmail,

@@ -62,7 +62,7 @@ export default class TransmitPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/transfer');
+    const res = await fetch('http://hins.work:49600/api/transfer');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
@@ -102,7 +102,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleCheck = async () => {
     await this.setState({ modalIsOpen: false, text: '', password: '' });
-    const res = await fetch(`http://127.0.0.1:49600/api/transfer/ticket/sign?fileId=${this.state.item.fileId}&signFor=${this.state.text}&password=${this.state.password}`);
+    const res = await fetch(`http://hins.work:49600/api/transfer/ticket/sign?fileId=${this.state.item.fileId}&signFor=${this.state.text}&password=${this.state.password}`);
     const data = await res.json();
     if (data.status === 200) {
       const copy = await swal(data.data, {
@@ -142,7 +142,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleUpload = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/upload', {
+    const res = await fetch('http://hins.work:49600/api/transfer/upload', {
       method: 'POST',
       data: {
         dir: this.state.path,
@@ -172,7 +172,7 @@ export default class TransmitPage extends Component<Props> {
 
   directDownload = async (item) => {
     await this.setState({ loading: true });
-    const res = await fetch(`http://127.0.0.1:49600/api/transfer/download?fileId=${item.fileId}`, {
+    const res = await fetch(`http://hins.work:49600/api/transfer/download?fileId=${item.fileId}`, {
       method: 'POST',
       body: {
         ticket: '',
@@ -189,8 +189,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleVerify = async () => {
     await this.setState({ loading: true });
-    console.log(this.state.ticket);
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/ticket/verify', {
+    const res = await fetch('http://hins.work:49600/api/transfer/ticket/verify', {
       method: 'POST',
       body: this.state.ticket
     });
@@ -204,7 +203,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleDownload = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/download', {
+    const res = await fetch('http://hins.work:49600/api/transfer/download', {
       method: 'POST',
       body: {
         ticket: this.state.ticket,

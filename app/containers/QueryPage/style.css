@@ -1,0 +1,138 @@
+.QueryPage {
+  width: 100%;
+  height: 100%;
+}
+
+.QueryPage .fileList {
+  overflow-y: scroll;
+  min-height: calc(100% - 161px);
+  padding: 0 35px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.QueryPage .fileList .file {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.QueryPage .fileList .file span {
+  font-size: 12px;
+  text-align: left;
+  color: #000;
+  display: inline-block;
+  width: 325px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.QueryPage .fileList .file .buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.QueryPage .fileList .file .buttons img {
+  cursor: pointer;
+}
+
+.QueryPage .fileList .file .buttons img:hover {
+  opacity: 0.5;
+}
+
+.QueryPage .footer {
+  height: 67px;
+  margin: 0 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #e7e7e7;
+}
+
+.QueryPage .footer input {
+  width: 409px;
+  height: 36px;
+  border-radius: 2px;
+  background-color: #fff;
+  border: solid 1px #e7e7e7;
+  box-sizing: border-box;
+  outline: 0 none;
+  padding-left: 15px;
+}
+
+.QueryPage .footer img {
+  margin-left: 14px;
+  cursor: pointer;
+}
+
+.QueryPage .fileList .file .buttons img:hover {
+  opacity: 0.5;
+}
+
+.QueryPage .footer img:hover {
+  opacity: 0.5;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+}
+
+.modalFileName {
+  font-size: 12px;
+  text-align: center;
+  color: #000;
+  margin: 0;
+}
+
+.modalFileDetail {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 35px;
+}
+
+.modalFileDetail p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #9a9a9a;
+  padding-left: 16px;
+}
+
+.modalFileDetail p span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #000;
+}
+
+.modalButton {
+  cursor: pointer;
+}
+
+.modalButton:hover {
+  opacity: 0.5;
+}

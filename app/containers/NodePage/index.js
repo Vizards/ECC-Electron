@@ -17,7 +17,7 @@ export default class NodePage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/info');
+    const res = await fetch('http://hins.work:49600/api/info');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
