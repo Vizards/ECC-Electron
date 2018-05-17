@@ -1,5 +1,5 @@
 
-<center><img src="https://o9sapbwjn.qnssl.com/2018-05-17-64x64.png" alt="logo"/></center>
+<p align="center"><img src="https://o9sapbwjn.qnssl.com/2018-05-17-64x64.png" alt="logo"/></p>
 
 <h1 align="center">ECC-Electron</h1>
 
