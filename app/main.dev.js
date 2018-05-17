@@ -66,11 +66,11 @@ app.on('ready', async () => {
   }
 
   mainWindow = new BrowserWindow({
-    show: false,
     width: 600,
     height: 400,
     titleBarStyle: 'hidden',
-    frame: false
+    frame: false,
+    thickFrame: true,
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
