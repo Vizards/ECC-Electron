@@ -27,6 +27,7 @@ const customStyles = {
   },
   content: {
     width: '465px',
+    height: '200px',
     margin: 'auto',
     borderRadius: '8px',
     boxShadow: '0 2px 30px 0 rgba(0, 0, 0, 0.14)',
@@ -38,6 +39,26 @@ const customStyles = {
     justifyContent: 'flex-start',
   }
 };
+
+const customStyles1 = {
+  overlay: {
+    background: 'rgba(255, 255, 255, 0.8)'
+  },
+  content: {
+    width: '465px',
+    margin: 'auto',
+    borderRadius: '8px',
+    boxShadow: '0 2px 30px 0 rgba(0, 0, 0, 0.14)',
+    background: '#fff',
+    border: 'solid 0.5px #d1d1d1',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  }
+};
+
+
 
 Modal.setAppElement('#root');
 
@@ -62,7 +83,7 @@ export default class TransmitPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://hins.work:49600/api/transfer');
+    const res = await fetch('http://127.0.0.1:49600/api/transfer');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
@@ -71,8 +92,7 @@ export default class TransmitPage extends Component<Props> {
   }
 
   showModal = async (item) => {
-    console.log(item);
-    item.field !== undefined ? await this.setState({
+    item.fileId !== undefined ? await this.setState({
       item,
       modalIsOpen: true,
     }) : await this.setState({ uploadModalIsOpen: true });
@@ -102,7 +122,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleCheck = async () => {
     await this.setState({ modalIsOpen: false, text: '', password: '' });
-    const res = await fetch(`http://hins.work:49600/api/transfer/ticket/sign?fileId=${this.state.item.fileId}&signFor=${this.state.text}&password=${this.state.password}`);
+    const res = await fetch(`http://127.0.0.1:49600/api/transfer/ticket/sign?fileId=${this.state.item.fileId}&signFor=${this.state.text}&password=${this.state.password}`);
     const data = await res.json();
     if (data.status === 200) {
       const copy = await swal(data.data, {
@@ -142,7 +162,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleUpload = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://hins.work:49600/api/transfer/upload', {
+    const res = await fetch('http://127.0.0.1:49600/api/transfer/upload', {
       method: 'POST',
       data: {
         dir: this.state.path,
@@ -172,7 +192,7 @@ export default class TransmitPage extends Component<Props> {
 
   directDownload = async (item) => {
     await this.setState({ loading: true });
-    const res = await fetch(`http://hins.work:49600/api/transfer/download?fileId=${item.fileId}`, {
+    const res = await fetch(`http://127.0.0.1:49600/api/transfer/download?fileId=${item.fileId}`, {
       method: 'POST',
       body: {
         ticket: '',
@@ -189,7 +209,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleVerify = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://hins.work:49600/api/transfer/ticket/verify', {
+    const res = await fetch('http://127.0.0.1:49600/api/transfer/ticket/verify', {
       method: 'POST',
       body: this.state.ticket
     });
@@ -203,7 +223,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleDownload = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://hins.work:49600/api/transfer/download', {
+    const res = await fetch('http://127.0.0.1:49600/api/transfer/download', {
       method: 'POST',
       body: {
         ticket: this.state.ticket,
@@ -277,7 +297,7 @@ export default class TransmitPage extends Component<Props> {
           isOpen={this.state.ticketModalIsOpen}
           onRequestClose={this.closeModal}
           contentLabel="Example Modal"
-          style={customStyles}
+          style={customStyles1}
         >
           <p className={styles.modalFileName}>核对并下载凭据</p>
           <textarea placeholder="输入凭据" name="ticket" value={this.state.ticket} onChange={this.handleChangeInput} className={styles.ticketInput} />

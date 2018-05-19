@@ -21,7 +21,7 @@ export default class HumanPage extends Component<Props> {
   }
 
   getData = async () => {
-    const res = await fetch('http://hins.work:49600/api/manage');
+    const res = await fetch('http://127.0.0.1:49600/api/manage');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
@@ -30,7 +30,7 @@ export default class HumanPage extends Component<Props> {
   };
 
   handleFreeze = async (item) => {
-    const res = await fetch('http://hins.work:49600/api/manage/freeze', {
+    const res = await fetch('http://127.0.0.1:49600/api/manage/freeze', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

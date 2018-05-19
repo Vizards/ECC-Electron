@@ -45,7 +45,7 @@ export default class AuditPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://hins.work:49600/api/log');
+    const res = await fetch('http://127.0.0.1:49600/api/log');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
@@ -73,7 +73,7 @@ export default class AuditPage extends Component<Props> {
   };
 
   handleTrack = async (fileId) => {
-    const res = await fetch(`http://hins.work:49600/api/log/track?fileId=${fileId}`);
+    const res = await fetch(`http://127.0.0.1:49600/api/log/track?fileId=${fileId}`);
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);

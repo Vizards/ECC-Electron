@@ -48,7 +48,7 @@ export default class QueryPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://hins.work:49600/api/search');
+    const res = await fetch('http://127.0.0.1:49600/api/search');
     const data = await res.json();
     if (data.status === 200) {
       console.log(data);
@@ -62,7 +62,7 @@ export default class QueryPage extends Component<Props> {
 
   handleView = async (item) => {
     await this.setState({ loading: true });
-    const res = await fetch('http://hins.work:49600/api/transfer/download', {
+    const res = await fetch('http://127.0.0.1:49600/api/transfer/download', {
       method: 'POST',
       data: {
         fileId: item.fileId
@@ -83,7 +83,7 @@ export default class QueryPage extends Component<Props> {
   };
 
   handleCheck = async (fileId) => {
-    const res = await fetch(`http://hins.work:49600/api/file?fileId=${fileId}`);
+    const res = await fetch(`http://127.0.0.1:49600/api/file?fileId=${fileId}`);
     const data = await res.json();
     console.log(data);
     if (data.status === 200) {
