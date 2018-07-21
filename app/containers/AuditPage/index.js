@@ -50,6 +50,8 @@ export default class AuditPage extends Component<Props> {
     if (data.status === 200) {
       console.log(data);
       this.setState({ operateList: data.data });
+    } else if (data.status === 400) {
+      alert(data.message)
     }
   }
 
@@ -80,6 +82,11 @@ export default class AuditPage extends Component<Props> {
       this.setState({
         sourceModalIsOpen: true,
         sourceData: data.data.downloadLogs,
+      });
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
       });
     } else {
       await swal({

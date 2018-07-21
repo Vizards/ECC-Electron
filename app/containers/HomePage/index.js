@@ -12,7 +12,7 @@ export default class HomePage extends Component<Props> {
   render() {
     return (
       <div className={styles.Homepage}>
-        <img src={title} alt="证链云" className={styles.logo} />
+        <img src={title} alt="政链云" className={styles.logo} />
         <Auth />
       </div>
     );

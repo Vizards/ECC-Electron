@@ -53,6 +53,8 @@ export default class QueryPage extends Component<Props> {
     if (data.status === 200) {
       console.log(data);
       this.setState({ fileList: data.data });
+    } else if (data.status === 400) {
+      alert(data.message)
     }
   }
 
@@ -74,6 +76,11 @@ export default class QueryPage extends Component<Props> {
       await swal({
         text: data.message,
       });
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
+      });
     } else {
       await swal({
         text: '发生错误，请重试',
@@ -90,6 +97,11 @@ export default class QueryPage extends Component<Props> {
       await this.setState({
         fileData: data.data,
         modalIsOpen: true,
+      });
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
       });
     } else {
       await swal({

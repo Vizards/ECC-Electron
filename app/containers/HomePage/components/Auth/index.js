@@ -24,6 +24,9 @@ const normalStyle = {
   color: '#b9b9b9'
 };
 
+const { dialog } = require('electron').remote;
+
+
 class Home extends Component<Props> {
   props: Props;
 
@@ -32,16 +35,31 @@ class Home extends Component<Props> {
     registerStyle: {},
     tab: 'login',
     loginEmail: '',
-    loginPassword: '',
     registerEmail: '',
     registerPassword: '',
-    department: '',
-    job: ''
+    path: '',
+    filename: '选择私钥文件'
   };
 
   componentDidMount() {
     this.handleSwitchLogin();
   }
+
+  handleSelect = async () => {
+    const fileArray = await dialog.showOpenDialog({
+      title: '选择您的私钥文件',
+      openDirectory: false,
+      showHiddenFiles: true,
+      createDirectory: true,
+      promptToCreate: true,
+      treatPackageAsDirectory: true,
+      multiSelections: false,
+    });
+    await this.setState({
+      path: fileArray[0],
+      filename: fileArray[0].substr(fileArray[0].lastIndexOf('/')+1)
+    });
+  };
 
   handleSwitchLogin = () => {
     this.setState({
@@ -64,35 +82,34 @@ class Home extends Component<Props> {
   };
 
   handleLogin = () => {
-    fetch('http://127.0.0.1:49600/api/login', {
-      method: 'POST',
-      data: {
-        email: this.state.loginEmail,
-        password: this.state.loginPassword,
-      }
+    fetch(`http://hins.work:33880/electron/profile/login?password=${this.state.loginEmail}&privateKeyFile=${this.state.path}`, {
+      method: 'POST'
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        if (data.status === 200 && data.message === 'success!') { this.props.history.push('/node'); }
+        if (data.code === 200 && data.message === 'success') {
+          this.props.history.push('/node');
+        } else {
+          alert('发生错误，请重试');
+        }
       })
       .catch(err => alert(err));
   };
 
   handleRegister = () => {
-    fetch('http://127.0.0.1:49600/api/register', {
-      method: 'POST',
-      data: {
-        email: this.state.registerEmail,
-        password: this.state.registerPassword,
-        department: this.state.department,
-        job: this.state.job,
-      }
+    fetch(`http://hins.work:33880/electron/profile/register?password=${this.state.registerPassword}&reservedInfo=${this.state.registerEmail}`, {
+      method: 'POST'
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        if (data.status === 200 && data.message === 'success!') { this.props.history.push('/node'); }
+        if (data.code === 200 && data.message === 'success') {
+          alert(data.data);
+          this.handleSwitchLogin();
+        } else {
+          alert('发生错误，请重试');
+        }
       })
       .catch(err => alert(err));
   };
@@ -107,8 +124,8 @@ class Home extends Component<Props> {
         <div className={styles.login} style={{ display: this.state.tab === 'login' ? 'flex' : 'none' }}>
           <p>用户标识</p>
           <input type="text" name="loginEmail" value={this.state.loginEmail} onChange={this.handleChange} />
-          <p>私钥保护密码</p>
-          <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.handleChange} />
+          <p>私钥文件</p>
+          <div className={styles.input} onClick={this.handleSelect}>{this.state.filename}</div>
           <img src={loginButton} alt="登录" onClick={this.handleLogin} />
         </div>
         <div className={styles.register} style={{ display: this.state.tab === 'register' ? 'flex' : 'none' }}>
@@ -116,10 +133,6 @@ class Home extends Component<Props> {
           <input type="text" name="registerEmail" value={this.state.registerEmail} onChange={this.handleChange} />
           <p>私钥保护密码</p>
           <input type="password" name="registerPassword" value={this.state.registerPassword} onChange={this.handleChange} />
-          <div className={styles.addon}>
-            <input type="text" placeholder="部门" name="department" value={this.state.department} onChange={this.handleChange} />
-            <input type="text" placeholder="职位" name="job" value={this.state.job} onChange={this.handleChange} />
-          </div>
           <img src={registerButton} alt="注册" onClick={this.handleRegister} />
         </div>
       </div>

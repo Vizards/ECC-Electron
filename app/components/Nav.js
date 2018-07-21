@@ -12,7 +12,7 @@ export default class Nav extends Component<Props> {
   render() {
     return (
       <div className={styles.Nav}>
-        <img src={logo} alt="证链云" />
+        <img src={logo} alt="政链云" />
         <div className={styles.navList}>
           <NavLink to="/node" activeClassName={styles.selected}>节点信息</NavLink>
           <NavLink to="/transmit" activeClassName={styles.selected}>政务传输</NavLink>

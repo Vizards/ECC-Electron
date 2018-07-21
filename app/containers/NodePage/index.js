@@ -12,40 +12,27 @@ type Props = {};
 export default class NodePage extends Component<Props> {
   props: Props;
 
-  state = {
-    data: {},
-  };
-
-  async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/info');
-    const data = await res.json();
-    if (data.status === 200) {
-      console.log(data);
-      this.setState({ data: data.data });
-    }
-  }
-
   render() {
     return (
       <div className={styles.NodePage}>
         <Nav />
         <div className={styles.top}>
           <div className={styles.left}>
-            <p><span>位置：</span>{this.state.data.location}</p>
-            <p><span>节点 ID：</span>{this.state.data.nodeId}</p>
-            <p><span>区块完整度：</span>{this.state.data.blockIntegrity}</p>
-            <p><span>工作状态：</span>{this.state.data.contractStatus}</p>
-            <p><span>合约执行情况：</span>{this.state.data.workStatus}</p>
+            <p><span>位置：</span>192.231.93.12:49600</p>
+            <p><span>节点 ID：</span>V7gJVSgd2OHsv_s7c</p>
+            <p><span>区块完整度：</span>100%</p>
+            <p><span>工作状态：</span>正常</p>
+            <p><span>合约执行情况：</span>正常</p>
           </div>
           <img src={shape} alt="节点信息" />
         </div>
         <div className={styles.bottom}>
           <div className={styles.left}>
-            <p><span>节点属主：</span>{this.state.data.owner}</p>
-            <p><span>用户公钥：</span>{this.state.data.publicKey}</p>
-            <p><span>用户私钥：</span>{this.state.data.privateKey}</p>
-            <p><span>用户注册时间：</span>{this.state.data.regDate}</p>
-            <p><span>状态：</span>{this.state.data.status}</p>
+            <p><span>节点属主：</span>test0@ecc.com</p>
+            <p><span>用户公钥：</span>fcvgbhjnkmnjbhvgftgyhujikvgftgyhujijxs45r6…</p>
+            <p><span>用户私钥：</span>已启用密码保护</p>
+            <p><span>用户注册时间：</span>2018-5-6 29013</p>
+            <p><span>状态：</span>UP</p>
           </div>
           <img src={avatar} alt="用户信息" />
         </div>

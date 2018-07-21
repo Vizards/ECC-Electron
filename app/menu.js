@@ -41,9 +41,9 @@ export default class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout = {
-      label: '证链云',
+      label: '政链云',
       submenu: [
-        { label: '关于证链云', selector: 'orderFrontStandardAboutPanel:' },
+        { label: '关于政链云', selector: 'orderFrontStandardAboutPanel:' },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },

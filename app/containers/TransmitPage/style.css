@@ -130,6 +130,21 @@
   opacity: 0.5;
 }
 
+.modalCheckBox {
+  padding-top: 20px;
+}
+
+.modalCheckBox span {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.42);
+  width: 311px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .loading {
   width: 100%;
   height: 100%;

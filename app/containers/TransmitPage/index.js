@@ -27,7 +27,7 @@ const customStyles = {
   },
   content: {
     width: '465px',
-    height: '200px',
+    height: '230px',
     margin: 'auto',
     borderRadius: '8px',
     boxShadow: '0 2px 30px 0 rgba(0, 0, 0, 0.14)',
@@ -59,7 +59,6 @@ const customStyles1 = {
 };
 
 
-
 Modal.setAppElement('#root');
 
 type Props = {};
@@ -80,14 +79,22 @@ export default class TransmitPage extends Component<Props> {
     loading: false,
     status: {},
     ticket: '',
+    isClassified: false,
+    needEncrypted: false,
   };
 
   async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/transfer');
+    const res = await fetch('http://hins.work:33880/electron/file');
     const data = await res.json();
-    if (data.status === 200) {
+    console.log(data);
+    if (data.code === 200) {
       console.log(data);
       this.setState({ fileList: data.data });
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
+      });
     }
   }
 
@@ -120,11 +127,16 @@ export default class TransmitPage extends Component<Props> {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleChangeChecked = (e) => {
+    this.setState({ [e.target.name]: e.target.checked });
+  }
+
   handleCheck = async () => {
     await this.setState({ modalIsOpen: false, text: '', password: '' });
-    const res = await fetch(`http://127.0.0.1:49600/api/transfer/ticket/sign?fileId=${this.state.item.fileId}&signFor=${this.state.text}&password=${this.state.password}`);
+    const res = await fetch(`http://hins.work:33880/electron/ticket?fileId=${this.state.item.fileId}&targetUserId==${this.state.text}&password=${this.state.password}`);
     const data = await res.json();
-    if (data.status === 200) {
+    console.log(data);
+    if (data.code === 200) {
       const copy = await swal(data.data, {
         buttons: {
           cancel: {
@@ -144,6 +156,11 @@ export default class TransmitPage extends Component<Props> {
         }
       });
       copy !== null && clipboard.writeText(copy);
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
+      });
     }
   };
 
@@ -162,16 +179,14 @@ export default class TransmitPage extends Component<Props> {
 
   handleUpload = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/upload', {
-      method: 'POST',
-      data: {
-        dir: this.state.path,
-        password: this.state.filePassword
-      },
+    console.log(this.state);
+    const res = await fetch(`http://hins.work:33880/electron/file/upload?needEncrypted=${this.state.needEncrypted}&isClassified=${this.state.isClassified}&secret=${this.state.filePassword}&filePath=${this.state.path}`, {
+      method: 'POST'
     });
     const data = await res.json();
+    console.log(data);
     await this.setState({ loading: false });
-    if (data.status === 200) {
+    if (data.code === 200) {
       await this.setState({
         path: '',
         filePassword: ''
@@ -184,57 +199,82 @@ export default class TransmitPage extends Component<Props> {
       });
     } else {
       await swal({
-        text: '发生错误，请重试',
+        text: data.message,
         timer: 2000,
       });
     }
   };
 
   directDownload = async (item) => {
-    await this.setState({ loading: true });
-    const res = await fetch(`http://127.0.0.1:49600/api/transfer/download?fileId=${item.fileId}`, {
-      method: 'POST',
-      body: {
-        ticket: '',
-      }
+    const filePath = await dialog.showOpenDialog({
+      title: '选择保存的路径',
+      buttonLabel: '保存',
+      properties: [
+        'openDirectory',
+        'createDirectory'
+      ],
     });
-    const data = await res.json();
-    await this.setState({ loading: false });
-    await swal({
-      text: data.message,
-      buttons: false,
-      timer: 2000,
-    });
+    console.log(filePath);
+    if (filePath !== undefined) {
+      await this.setState({ loading: true });
+      const res = await fetch(`http://hins.work:33880/electron/file/download/id?fileId=${item.fileId}&downloadPath=${filePath[0]}`);
+      const data = await res.json();
+      await this.setState({ loading: false });
+      await swal({
+        text: data.message,
+        buttons: false,
+        timer: 2000,
+      });
+    }
   };
 
   handleVerify = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/ticket/verify', {
+    const res = await fetch('http://hins.work:33880/electron/ticket', {
       method: 'POST',
-      body: this.state.ticket
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: `"${this.state.ticket}"`
     });
     const data = await res.json();
-    if (data.status === 200) {
+    await this.setState({ loading: false });
+    if (data.code === 200) {
       console.log(data);
       this.setState({ status: data.data });
+    } else {
+      await swal({
+        text: data.message,
+        timer: 2000,
+      });
     }
-    await this.setState({ loading: false });
   };
 
   handleDownload = async () => {
-    await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/download', {
-      method: 'POST',
-      body: {
-        ticket: this.state.ticket,
-      }
+    const filePath = await dialog.showOpenDialog({
+      title: '选择保存的路径',
+      buttonLabel: '保存',
+      properties: [
+        'openDirectory',
+        'createDirectory'
+      ],
     });
-    const data = await res.json();
-    await this.setState({ loading: false });
-    if (data.status === 200) await this.closeModal();
-    await swal({
-      text: data.message,
-    });
+    if (filePath !== undefined) {
+      await this.setState({ loading: true });
+      const res = await fetch(`http://hins.work:33880/electron/file/download/ticket?downloadPath=${filePath[0]}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: `"${this.state.ticket}"`
+      });
+      const data = await res.json();
+      await this.setState({ loading: false });
+      if (data.code === 200) await this.closeModal();
+      await swal({
+        text: data.message,
+      });
+    }
   };
 
   render() {
@@ -288,6 +328,10 @@ export default class TransmitPage extends Component<Props> {
             <img src={select} alt="select" onClick={this.handleSelect} />
           </div>
           <input type="password" name="filePassword" placeholder="文件密码" value={this.state.filePassword} onChange={this.handleChangeInput} className={styles.modalInput} />
+          <div className={styles.modalCheckBox}>
+            <input type="checkbox" name="needEncrypted" checked={this.state.needEncrypted} onChange={this.handleChangeChecked} /> <span>加密</span>
+            <input type="checkbox" name="isClassified" checked={this.state.isClassified} onChange={this.handleChangeChecked} /> <span>机密文件</span>
+          </div>
           <div className={styles.modalButtons}>
             <img src={cancel} alt="close" onClick={this.closeModal} />
             <img src={upload1} alt="upload" onClick={this.handleUpload} />
@@ -302,15 +346,15 @@ export default class TransmitPage extends Component<Props> {
           <p className={styles.modalFileName}>核对并下载凭据</p>
           <textarea placeholder="输入凭据" name="ticket" value={this.state.ticket} onChange={this.handleChangeInput} className={styles.ticketInput} />
           <div className={styles.modalInfo}>
-            <p><span>凭据状态：</span>{this.state.status.status === undefined ? '请输入凭据后点击验证按钮' : this.state.status.status}</p>
-            <p><span>签发者：</span>{this.state.status.signer === undefined ? '请输入凭据后点击验证按钮' : this.state.status.signer}</p>
-            <p><span>签发时间：</span>{this.state.status.signDate === undefined ? '请输入凭据后点击验证按钮' : this.state.status.signDate}</p>
+            <p><span>凭据状态：</span>{this.state.status.isAvailable === undefined ? '请输入凭据后点击验证按钮' : this.state.status.isAvailable ? '有效' : '无效'}</p>
+            <p><span>签发者：</span>{this.state.status.owner === undefined ? '请输入凭据后点击验证按钮' : this.state.status.owner}</p>
+            <p><span>签发时间：</span>{this.state.status.timestamp === undefined ? '请输入凭据后点击验证按钮' : this.state.status.timestamp}</p>
             <p><span>文件名：</span>{this.state.status.fileName === undefined ? '请输入凭据后点击验证按钮' : this.state.status.fileName}</p>
-            <p><span>权限：</span>{this.state.status.permission === undefined ? '请输入凭据后点击验证按钮' : this.state.status.permission}</p>
+            <p><span>文件 ID：</span>{this.state.status.fileId === undefined ? '请输入凭据后点击验证按钮' : this.state.status.fileId}</p>
           </div>
           <div className={styles.modalButtons}>
             <img src={cancel} alt="close" onClick={this.closeModal} />
-            {this.state.status.status !== '可用' ? <img src={verify} alt="verify" onClick={this.handleVerify} /> : <img src={download1} alt="download" onClick={this.handleDownload} />}
+            {!this.state.status.isAvailable ? <img src={verify} alt="verify" onClick={this.handleVerify} /> : <img src={download1} alt="download" onClick={this.handleDownload} />}
           </div>
         </Modal>
       </div>

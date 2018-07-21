@@ -26,6 +26,8 @@ export default class HumanPage extends Component<Props> {
     if (data.status === 200) {
       console.log(data);
       this.setState({ peopleList: data.data });
+    } else if (data.status === 400) {
+      alert(data.message)
     }
   };
 
@@ -40,6 +42,11 @@ export default class HumanPage extends Component<Props> {
     const data = await res.json();
     if (data.status === 200) {
       await this.getData();
+    } else if (data.status === 400) {
+      await swal({
+        text: data.message,
+        timer: 2000,
+      });
     } else {
       await swal({
         text: '发生错误，请重试',
