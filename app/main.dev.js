@@ -66,10 +66,10 @@ app.on('ready', async () => {
   }
 
   mainWindow = new BrowserWindow({
-    width: 600,
+    width: 600, // win: 615
     height: 400,
-    // titleBarStyle: 'hidden',
-    // frame: false,
+    titleBarStyle: 'hidden', // win: delete
+    frame: false, // win: delete
     thickFrame: true,
   });
 
@@ -89,6 +89,7 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+  // win: delete
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 });

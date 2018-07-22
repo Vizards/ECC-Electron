@@ -60,6 +60,7 @@ li {
   color: #000;
   font-size: 12px;
   text-align: left;
+  word-break: break-all;
 }
 
 .swal-content__input {

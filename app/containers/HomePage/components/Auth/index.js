@@ -2,6 +2,7 @@
 // @flow
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import swal from 'sweetalert';
 import styles from './style.css';
 import loginButton from '../images/login-button.svg';
 import registerButton from '../images/register-button.svg';
@@ -82,7 +83,7 @@ class Home extends Component<Props> {
   };
 
   handleLogin = () => {
-    fetch(`http://hins.work:33880/electron/profile/login?password=${this.state.loginEmail}&privateKeyFile=${this.state.path}`, {
+    fetch(`http://127.0.0.1:33880/electron/profile/login?password=${this.state.loginEmail}&privateKeyFile=${this.state.path}`, {
       method: 'POST'
     })
       .then(res => res.json())
@@ -91,27 +92,35 @@ class Home extends Component<Props> {
         if (data.code === 200 && data.message === 'success') {
           this.props.history.push('/node');
         } else {
-          alert('发生错误，请重试');
+          swal({
+            text: data.message !== undefined ? data.message : '发生错误，请重试',
+            timer: 2000,
+          });
         }
       })
-      .catch(err => alert(err));
+      .catch(err => swal({ text: err }));
   };
 
   handleRegister = () => {
-    fetch(`http://hins.work:33880/electron/profile/register?password=${this.state.registerPassword}&reservedInfo=${this.state.registerEmail}`, {
+    fetch(`http://127.0.0.1:33880/electron/profile/register?password=${this.state.registerPassword}&reservedInfo=${this.state.registerEmail}`, {
       method: 'POST'
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
         if (data.code === 200 && data.message === 'success') {
-          alert(data.data);
+          swal({
+            text: data.data,
+          });
           this.handleSwitchLogin();
         } else {
-          alert('发生错误，请重试');
+          swal({
+            text: data.message !== undefined ? data.message : '发生错误，请重试',
+            timer: 2000,
+          });
         }
       })
-      .catch(err => alert(err));
+      .catch(err => swal({ text: err }));
   };
 
   render() {

@@ -9,11 +9,12 @@ import styles from './style.css';
 import Nav from '../../components/Nav';
 
 import view from './images/view.svg';
-import inside from './images/group8.svg';
 import check from './images/group11.svg';
 import close from './images/group6.svg';
 
 type Props = {};
+
+const { dialog } = require('electron').remote;
 
 const customStyles = {
   overlay: {
@@ -48,13 +49,15 @@ export default class QueryPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/search');
+    const res = await fetch('http://127.0.0.1:33880/electron/affair');
     const data = await res.json();
-    if (data.status === 200) {
+    if (data.code === 200) {
       console.log(data);
       this.setState({ fileList: data.data });
-    } else if (data.status === 400) {
-      alert(data.message)
+    } else {
+      await swal({
+        text: data.message
+      });
     }
   }
 
@@ -63,49 +66,46 @@ export default class QueryPage extends Component<Props> {
   };
 
   handleView = async (item) => {
-    await this.setState({ loading: true });
-    const res = await fetch('http://127.0.0.1:49600/api/transfer/download', {
-      method: 'POST',
-      data: {
-        fileId: item.fileId
-      }
+    const filePath = await dialog.showOpenDialog({
+      title: '选择保存的路径',
+      buttonLabel: '保存',
+      properties: [
+        'openDirectory',
+        'createDirectory'
+      ],
     });
-    const data = await res.json();
-    await this.setState({ loading: false });
-    if (data.status === 200) {
-      await swal({
-        text: data.message,
-      });
-    } else if (data.status === 400) {
-      await swal({
-        text: data.message,
-        timer: 2000,
-      });
-    } else {
-      await swal({
-        text: '发生错误，请重试',
-        timer: 2000,
-      });
+    console.log(filePath);
+    if (filePath !== undefined) {
+      await this.setState({ loading: true });
+      const res = await fetch(`http://127.0.0.1:33880/electron/affair/download?fileId=${item.fileId}&downloadPath=${filePath[0]}`);
+      const data = await res.json();
+      console.log(data);
+      await this.setState({ loading: false });
+      if (data.code === 200) {
+        await swal({
+          text: data.message,
+        });
+      } else {
+        await swal({
+          text: data.message !== undefined ? data.message : '发生错误，请重试',
+          timer: 2000,
+        });
+      }
     }
   };
 
   handleCheck = async (fileId) => {
-    const res = await fetch(`http://127.0.0.1:49600/api/file?fileId=${fileId}`);
+    const res = await fetch(`http://127.0.0.1:33880/electron/affair/info?fileId=${fileId}`);
     const data = await res.json();
     console.log(data);
-    if (data.status === 200) {
+    if (data.code === 200) {
       await this.setState({
         fileData: data.data,
         modalIsOpen: true,
       });
-    } else if (data.status === 400) {
-      await swal({
-        text: data.message,
-        timer: 2000,
-      });
     } else {
       await swal({
-        text: '发生错误，请重试',
+        text: data.message !== undefined ? data.message : '发生错误，请重试',
         timer: 2000,
       });
     }
@@ -132,7 +132,7 @@ export default class QueryPage extends Component<Props> {
             <div key={item.fileId} className={styles.file}>
               <span>{item.fileName}</span>
               <div className={styles.buttons}>
-                {item.isInside ? <img src={inside} alt="内部" onClick={this.handleCheck.bind(this, item.fileId)} /> : <img src={view} alt="查看" onClick={this.handleView.bind(this, item)} />}
+                <img src={view} alt="查看" onClick={this.handleView.bind(this, item)} />
               </div>
             </div>
           ))}
@@ -151,8 +151,9 @@ export default class QueryPage extends Component<Props> {
           <div className={styles.modalFileDetail}>
             <p><span>文件名：</span>{this.state.fileData.fileName}</p>
             <p><span>所有者：</span>{this.state.fileData.owner}</p>
-            <p><span>上传时间：</span>{this.state.fileData.date}</p>
-            <p><span>hash：</span>{this.state.fileData.hash}</p>
+            <p><span>上传时间：</span>{this.state.fileData.timestamp}</p>
+            <p><span>hash：</span>{this.state.fileData.fileHash}</p>
+            <p><span>机密文件：</span>{this.state.fileData.isClassified ? '是': '否'}</p>
           </div>
           <img src={close} alt="关闭" onClick={this.closeModal} className={styles.modalButton} />
         </Modal>

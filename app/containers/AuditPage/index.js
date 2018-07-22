@@ -41,26 +41,38 @@ export default class AuditPage extends Component<Props> {
     sourceModalIsOpen: false,
     log: {},
     fileId: '',
-    sourceData: [],
+    sourceData: {},
+    histroy: []
   };
 
   async componentWillMount() {
-    const res = await fetch('http://127.0.0.1:49600/api/log');
+    const res = await fetch('http://127.0.0.1:33880/electron/audit');
     const data = await res.json();
-    if (data.status === 200) {
+    if (data.code === 200) {
       console.log(data);
       this.setState({ operateList: data.data });
-    } else if (data.status === 400) {
-      alert(data.message)
+    } else {
+      await swal({
+        text: data.message
+      });
     }
   }
 
   handleDisplay = async (item) => {
     console.log(item);
-    await this.setState({
-      log: item,
-      modalIsOpen: true
-    });
+    const res = await fetch(`http://127.0.0.1:33880/electron/audit/detail?transactionId=${item.transactionId}`);
+    const data = await res.json();
+    console.log(data);
+    if (data.code === 200) {
+      await this.setState({
+        log: data.data,
+        modalIsOpen: true
+      });
+    } else {
+      await swal({
+        text: data.message
+      });
+    }
   };
 
   closeModal = () => {
@@ -75,22 +87,19 @@ export default class AuditPage extends Component<Props> {
   };
 
   handleTrack = async (fileId) => {
-    const res = await fetch(`http://127.0.0.1:49600/api/log/track?fileId=${fileId}`);
+    const res = await fetch(`http://127.0.0.1:33880/electron/audit/trace?fileId=${fileId}`);
     const data = await res.json();
-    if (data.status === 200) {
+    console.log(data);
+    if (data.code === 200) {
       console.log(data);
       this.setState({
         sourceModalIsOpen: true,
-        sourceData: data.data.downloadLogs,
-      });
-    } else if (data.status === 400) {
-      await swal({
-        text: data.message,
-        timer: 2000,
+        sourceData: data.data,
+        history: data.data.downloadLogs,
       });
     } else {
       await swal({
-        text: '发生错误，请重试',
+        text: data.message !== undefined ? data.message : '发生错误，请重试',
         timer: 2000,
       });
     }
@@ -102,11 +111,10 @@ export default class AuditPage extends Component<Props> {
         <Nav />
         <div className={styles.operateList}>
           {this.state.operateList.map(item => (
-            <div key={item.logId} className={styles.log}>
+            <div key={item.timestamp} className={styles.log}>
               <span>
                 {item.timestamp}&nbsp;&nbsp;&nbsp;&nbsp;
-                {item.operator}&nbsp;&nbsp;&nbsp;&nbsp;
-                {item.actionType}&nbsp;&nbsp;&nbsp;&nbsp;
+                {item.userId}&nbsp;&nbsp;&nbsp;&nbsp;
                 {item.fileName}
               </span>
               <img src={detail} alt="详情" onClick={this.handleDisplay.bind(this, item)} />
@@ -125,14 +133,13 @@ export default class AuditPage extends Component<Props> {
         >
           <p className={styles.modalFileName}>操作详情</p>
           <div className={styles.modalFileDetail}>
-            <p><span>交易 ID：</span>{this.state.log.logId}</p>
-            <p><span>操作者：</span>{this.state.log.operator}</p>
-            <p><span>操作类型：</span>{this.state.log.actionType}</p>
+            <p><span>交易 ID：</span>{this.state.log.transactionId}</p>
+            <p><span>合同 ID：</span>{this.state.log.contractId}</p>
+            <p><span>操作者：</span>{this.state.log.userId}</p>
+            <p><span>操作类型：</span>{this.state.log.logType}</p>
             <p><span>文件名：</span>{this.state.log.fileName}</p>
             <p><span>时间戳：</span>{this.state.log.timestamp}</p>
-            <p><span>所属部门：</span>{this.state.log.department}</p>
-            <p><span>职位：</span>{this.state.log.job}</p>
-            <p><span>IP：</span>{this.state.log.ip}</p>
+            <p><span>MAC：</span>{this.state.log.mac}</p>
           </div>
           <img src={close} alt="关闭" onClick={this.closeModal} className={styles.modalButton} />
         </Modal>
@@ -143,11 +150,16 @@ export default class AuditPage extends Component<Props> {
           style={customStyles}
         >
           <p className={styles.modalFileName}>文件溯源</p>
-          {this.state.sourceData.map((item, key) => (
+          <div className={styles.modalListItem}>
+            <p><span>文件名：</span>{this.state.sourceData.fileName}</p>
+            <p><span>所有者：</span>{this.state.sourceData.fileOwner}</p>
+            <p><span>上传时间：</span>{this.state.sourceData.fileTimestamp}</p>
+          </div>
+          {this.state.histroy.map((item, key) => (
             <div className={styles.modalListItem} key={key}>
-              <p><span>下载者：</span>{item.operator}</p>
-              <p><span>时间：</span>{item.timestamp}</p>
-              <p><span>IP：</span>{item.ip}</p>
+              <p><span>下载者：</span>{item.userId}</p>
+              <p><span>ticketId：</span>{item.ticketId}</p>
+              <p><span>MAC：</span>{item.mac}</p>
             </div>
           ))}
         </Modal>

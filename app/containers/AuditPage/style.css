@@ -4,8 +4,8 @@
 }
 
 .AuditPage .operateList {
-  overflow-y: scroll;
-  min-height: calc(100% - 161px);
+  overflow-y: auto;
+  height: calc(100% - 161px);
   padding: 0 35px;
   margin-top: 24px;
   display: flex;
@@ -18,9 +18,9 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 }
 
 .AuditPage .operateList .log span {

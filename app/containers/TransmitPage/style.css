@@ -34,6 +34,18 @@
   white-space: nowrap;
 }
 
+.TransmitPage .fileList .file p {
+  color: #9b9b9b;
+  font-size: 12px;
+  margin: 0;
+}
+
+.TransmitPage .fileList .file p a {
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+
 .TransmitPage .fileList .file .buttons {
   display: flex;
   flex-direction: row;

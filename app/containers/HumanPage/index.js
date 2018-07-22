@@ -21,35 +21,32 @@ export default class HumanPage extends Component<Props> {
   }
 
   getData = async () => {
-    const res = await fetch('http://127.0.0.1:49600/api/manage');
+    const res = await fetch('http://127.0.0.1:33880/electron/profile/freeze');
     const data = await res.json();
-    if (data.status === 200) {
+    if (data.code === 200) {
       console.log(data);
       this.setState({ peopleList: data.data });
-    } else if (data.status === 400) {
-      alert(data.message)
+    } else {
+      await swal({
+        text: data.message !== undefined ? data.message : '发生错误，请重试',
+        timer: 2000,
+      });
     }
   };
 
   handleFreeze = async (item) => {
-    const res = await fetch('http://127.0.0.1:49600/api/manage/freeze', {
+    const res = await fetch(`http://127.0.0.1:33880/electron/profile/freeze?id=${item.id}`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify(item),
     });
     const data = await res.json();
-    if (data.status === 200) {
+    if (data.code === 200) {
       await this.getData();
-    } else if (data.status === 400) {
-      await swal({
-        text: data.message,
-        timer: 2000,
-      });
     } else {
       await swal({
-        text: '发生错误，请重试',
+        text: data.message !== undefined ? data.message : '发生错误，请重试',
         timer: 2000,
       });
     }
@@ -60,12 +57,11 @@ export default class HumanPage extends Component<Props> {
       <div className={styles.HumanPage}>
         <Nav />
         <div className={styles.operateList}>
-          {this.state.peopleList.map((item, key) => (
-            <div key={key} className={styles.log}>
+          {this.state.peopleList.map((item) => (
+            <div key={item.id} className={styles.log}>
               <span>{item.email}</span>
               <span style={{ color: '#bababa'}}>{item.status}</span>
               <span style={{ color: '#bababa'}}>{item.department}</span>
-              <span style={{ color: '#bababa'}}>{item.job}</span>
               {item.isFreeze ? <img src={unlock} alt="解锁" onClick={this.handleFreeze.bind(this, item)} /> : <img src={freeze} alt="冻结" onClick={this.handleFreeze.bind(this, item)} />}
             </div>
           ))}

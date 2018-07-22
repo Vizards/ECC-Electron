@@ -84,7 +84,7 @@ export default class TransmitPage extends Component<Props> {
   };
 
   async componentWillMount() {
-    const res = await fetch('http://hins.work:33880/electron/file');
+    const res = await fetch('http://127.0.0.1:33880/electron/file');
     const data = await res.json();
     console.log(data);
     if (data.code === 200) {
@@ -129,11 +129,11 @@ export default class TransmitPage extends Component<Props> {
 
   handleChangeChecked = (e) => {
     this.setState({ [e.target.name]: e.target.checked });
-  }
+  };
 
   handleCheck = async () => {
     await this.setState({ modalIsOpen: false, text: '', password: '' });
-    const res = await fetch(`http://hins.work:33880/electron/ticket?fileId=${this.state.item.fileId}&targetUserId==${this.state.text}&password=${this.state.password}`);
+    const res = await fetch(`http://127.0.0.1:33880/electron/ticket?fileId=${this.state.item.fileId}&targetUserId==${this.state.text}&password=${this.state.password}`);
     const data = await res.json();
     console.log(data);
     if (data.code === 200) {
@@ -164,6 +164,10 @@ export default class TransmitPage extends Component<Props> {
     }
   };
 
+  handleCopyFileId = async (item) => {
+    await clipboard.writeText(item.fileId);
+  };
+
   handleSelect = async () => {
     const fileArray = await dialog.showOpenDialog({
       title: '选择您要上传的文件',
@@ -180,7 +184,7 @@ export default class TransmitPage extends Component<Props> {
   handleUpload = async () => {
     await this.setState({ loading: true });
     console.log(this.state);
-    const res = await fetch(`http://hins.work:33880/electron/file/upload?needEncrypted=${this.state.needEncrypted}&isClassified=${this.state.isClassified}&secret=${this.state.filePassword}&filePath=${this.state.path}`, {
+    const res = await fetch(`http://127.0.0.1:33880/electron/file/upload?needEncrypted=${this.state.needEncrypted}&isClassified=${this.state.isClassified}&secret=${this.state.filePassword}&filePath=${this.state.path}`, {
       method: 'POST'
     });
     const data = await res.json();
@@ -217,7 +221,7 @@ export default class TransmitPage extends Component<Props> {
     console.log(filePath);
     if (filePath !== undefined) {
       await this.setState({ loading: true });
-      const res = await fetch(`http://hins.work:33880/electron/file/download/id?fileId=${item.fileId}&downloadPath=${filePath[0]}`);
+      const res = await fetch(`http://127.0.0.1:33880/electron/file/download/id?fileId=${item.fileId}&downloadPath=${filePath[0]}`);
       const data = await res.json();
       await this.setState({ loading: false });
       await swal({
@@ -230,7 +234,7 @@ export default class TransmitPage extends Component<Props> {
 
   handleVerify = async () => {
     await this.setState({ loading: true });
-    const res = await fetch('http://hins.work:33880/electron/ticket', {
+    const res = await fetch('http://127.0.0.1:33880/electron/ticket', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -261,7 +265,7 @@ export default class TransmitPage extends Component<Props> {
     });
     if (filePath !== undefined) {
       await this.setState({ loading: true });
-      const res = await fetch(`http://hins.work:33880/electron/file/download/ticket?downloadPath=${filePath[0]}`, {
+      const res = await fetch(`http://127.0.0.1:33880/electron/file/download/ticket?downloadPath=${filePath[0]}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -290,7 +294,10 @@ export default class TransmitPage extends Component<Props> {
         <div className={styles.fileList}>
           {this.state.fileList.map(item => (
             <div key={item.fileId} className={styles.file}>
-              <span>{item.fileName}</span>
+              <div>
+                <span>{item.fileName}</span>
+                <p>{item.fileId}<a onClick={this.handleCopyFileId.bind(this, item)}>复制</a></p>
+              </div>
               <div className={styles.buttons}>
                 <img src={issue} alt="签发" onClick={this.showModal.bind(this, item)} />
                 <img src={download} alt="下载" className={styles.lastButton} onClick={this.directDownload.bind(this, item)} />
