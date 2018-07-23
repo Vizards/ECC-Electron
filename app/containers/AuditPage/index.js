@@ -42,7 +42,7 @@ export default class AuditPage extends Component<Props> {
     log: {},
     fileId: '',
     sourceData: {},
-    histroy: []
+    history: []
   };
 
   async componentWillMount() {
@@ -155,7 +155,7 @@ export default class AuditPage extends Component<Props> {
             <p><span>所有者：</span>{this.state.sourceData.fileOwner}</p>
             <p><span>上传时间：</span>{this.state.sourceData.fileTimestamp}</p>
           </div>
-          {this.state.histroy.map((item, key) => (
+          {this.state.history.map((item, key) => (
             <div className={styles.modalListItem} key={key}>
               <p><span>下载者：</span>{item.userId}</p>
               <p><span>ticketId：</span>{item.ticketId}</p>
